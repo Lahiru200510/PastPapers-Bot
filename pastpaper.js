@@ -630,7 +630,7 @@ let media = await ElisaBotMd.downloadAndSaveMediaMessage(quoted)
 		case 'mk':{
     const menu=`Mokuth na aneh Mokada karanne oyaa💖!!`
     ElisaBotMd.sendText(m.chat,menu)
-	await ElisaBotMd.sendMessage(m.chat, { audio: {url:'https://github.com/DarkMakerofc/UPLOADS/raw/main/VOICE/mk.mp3'}, mimetype: 'audio/mp4', ptt: true }, { quoted: m })
+    ElisaBotMd.sendMessage(m.chat, { audio: {url:'https://github.com/DarkMakerofc/UPLOADS/raw/main/VOICE/mk.mp3'}, mimetype: 'audio/mp4', ptt: true }, { quoted: m })
 
  }
 
