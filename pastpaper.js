@@ -160,7 +160,54 @@ module.exports = ElisaBotMd = async (ElisaBotMd, m, chatUpdate, store) => {
     	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
     	
 	    
+        //member\\
+        	
+          try {
+            let isNumber = x => typeof x === 'number' && !isNaN(x)
+            let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
+            let user = global.db.data.users[m.sender]
+            if (typeof user !== 'object') global.db.data.users[m.sender] = {}
+            if (user) {
+                if (!isNumber(user.afkTime)) user.afkTime = -1
+                if (!('afkReason' in user)) user.afkReason = ''
+                if (!isNumber(user.limit)) user.limit = limitUser
+            } else global.db.data.users[m.sender] = {
+                afkTime: -1,
+                afkReason: '',
+                limit: limitUser,
+            }
+    
+            let chats = global.db.data.chats[m.chat]
+            if (typeof chats !== 'object') global.db.data.chats[m.chat] = {}
+            if (chats) {
+                if (!('mute' in chats)) chats.mute = false
+                if (!('antilink' in chats)) chats.antilink = false
+            } else global.db.data.chats[m.chat] = {
+                mute: false,
+                antilink: false,
+            }
+	  if(!isBotAdmins && m.isGroup && command)return await ElisaBotMd.sendText(m.chat,`*පළමුව බොට් සදහා ඇඩ්මින් ලබාදෙන්න!🥲🦾👑️*
 
+*First! make the bot the group admin..!🥲🦾👑️*
+
+*முதலில் போட்டை குழு நிர்வாகியாக்குங்கள்!🥲🦾👑️*
+
+Ⓒᴾᵃˢᵗ ᴾᵃᵖᵉʳˢ ᴼᴸ ᵇᵒᵗ ᵇʸ ᴾᵃˢⁱⁿᵈᵘ ˢᵃⁿᵈᵃʳᵘʷᵃⁿ
+
+	  `)
+	    let setting = global.db.data.settings[botNumber]
+            if (typeof setting !== 'object') global.db.data.settings[botNumber] = {}
+	    if (setting) {
+		if (!isNumber(setting.status)) setting.status = 0
+		if (!('autobio' in setting)) setting.autobio = false
+	    } else global.db.data.settings[botNumber] = {
+		status: 0,
+		autobio: false,
+	    }
+	    
+        } catch (err) {
+            console.error(err)
+        }
 	
 	//group target \\
 const reply = (teks) => {
@@ -579,9 +626,8 @@ let media = await ElisaBotMd.downloadAndSaveMediaMessage(quoted)
                                   }
                                 
                               }
-                              break      
-        
-case 'mk':{
+                              break     
+		case 'mk':{
     const menu=`Mokuth na aneh Mokada karanne oyaa💖!!`
     ElisaBotMd.sendText(m.chat,menu)
 	await ElisaBotMd.sendMessage(m.chat, { audio: {url:'https://github.com/DarkMakerofc/UPLOADS/raw/main/VOICE/mk.mp3'}, mimetype: 'audio/mp4', ptt: true }, { quoted: m })
@@ -639,6 +685,27 @@ await ElisaBotMd.groupSettingUpdate(m.chat, 'not_announcement')
 	reply(`සමූහය විවෘත කරල ලදී!`)
 }     
 break
+case 'mute': {
+if (!m.isGroup) retrun
+ if (!isBotAdmins) return 
+  if (!isAdmins) return	
+await ElisaBotMd.groupSettingUpdate(m.chat, 'announcement')
+reply(`සමූහය වසා දමන ලදී!`)	
+}
+break
+        
+	
+		
+		
+case 'unmute': {		
+if (!m.isGroup) retrun
+ if (!isBotAdmins) return 
+ if (!isAdmins) return
+await ElisaBotMd.groupSettingUpdate(m.chat, 'not_announcement')
+	reply(`සමූහය විවෘත කරල ලදී!`)
+}     
+break
+		
 case 'mute': {
 if (!m.isGroup) retrun
  if (!isBotAdmins) return 
